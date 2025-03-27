@@ -1,0 +1,20 @@
+# Estrutura de pastas da aplicação
+
+project/
+│
+├── main.py                  # Application entry point
+├── requirements.txt         # Dependencies
+│
+├── middleware/              # Authentication and other middleware
+│   └── auth.py              # JWT token validation
+│
+├── routers/                 # API routes
+│   └── extractors.py        # Extractor endpoints
+│
+├── schemas.py               # Pydantic data validation models
+│
+└── services/                # Business logic
+    ├── data_service.py      # OpenAI data extraction service
+    ├── image_service.py     # Google Vision image text extraction
+    ├── pdf_service.py       # PDF text extraction
+    └── xlsx_service.py      # Excel file text extraction
