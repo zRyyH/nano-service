@@ -32,15 +32,24 @@ router = APIRouter(
     summary="Extract text from XLSX file",
     description="Extracts all text content from an Excel XLSX file",
 )
-async def extract_xlsx_endpoint(file: UploadFile = File(...)):
+async def extract_xlsx_endpoint(
+    file: UploadFile = File(...),
+    sheet_index: int = 0,
+    start_row: int = 1,
+    end_row: int = None,
+):
     if not file.filename:
         raise HTTPException(status_code=400, detail="Empty file name")
 
     content = await file.read()
 
     try:
-        text = await loop.run_in_executor(executor, extract_text_from_xlsx, content)
-        return {"text": text}
+        result = await loop.run_in_executor(
+            executor, extract_text_from_xlsx, content, sheet_index, start_row, end_row
+        )
+
+        return JSONResponse(content=result, status_code=status.HTTP_200_OK)
+
     except Exception as e:
         raise HTTPException(
             status_code=400, detail=f"Error processing XLSX file: {str(e)}"
